@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { Todo } from "../interfaces/Todo";
 import { ButtonComponent } from "./button";
 import "./todoItem.scss";
+import { ModalComponent } from "./modal";
 
 type propStuff = {
   todo: Todo;
@@ -28,7 +29,12 @@ export const TodoItem = ({ todo }: propStuff) => {
   };
 
   return (
-    <div className="card mt-5 border-primary" style={{ width: "18em" }}>
+    <div
+      className={`card mt-5 border-primary ${
+        todo.done ? "done" : "unfinished"
+      }`}
+      style={{ width: "18em" }}
+    >
       {!editTitle ? (
         <h3
           onDoubleClick={() => makeEditiable("title")}
@@ -73,7 +79,7 @@ export const TodoItem = ({ todo }: propStuff) => {
       </div>
       <div className="d-flex justify-content-end align-items-end">
         <ButtonComponent btnIcon="bi bi-trash-fill"></ButtonComponent>
-        <ButtonComponent btnIcon="bi bi-pencil-square"></ButtonComponent>
+        <ModalComponent modalTitle="Edit Todo" todo={todo}></ModalComponent>
       </div>
     </div>
   );

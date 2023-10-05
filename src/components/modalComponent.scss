@@ -1,0 +1,31 @@
+@use "../variables";
+
+.spacer {
+  margin-left: 1em;
+}
+// ::ng-deep .modal-content {
+//   border-radius: 0%;
+// }
+
+.modal-header {
+  background-color: variables.$card-header-color;
+  border-bottom-width: variables.$border-bottom-width;
+  border-bottom-color: variables.$border-botoom-color;
+}
+
+.modal-body {
+  background-color: #7331a6;
+}
+
+.modal-footer {
+  background-color: variables.$card-header-color;
+}
+.modal-dialog > * {
+  input {
+    background-color: #e3d5ed;
+    display: block;
+  }
+  .btn {
+    background: #18d9bb;
+  }
+}
