@@ -1,0 +1,45 @@
+@use "../variables" as var;
+
+@mixin inline-input($bgCol) {
+  border: none;
+  color: #000;
+  font-family: monospace;
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: 0.15em; /* Adjust as needed */
+  background: $bgCol;
+}
+
+.done {
+  background-color: var.$card-finished-bg;
+}
+.unfinished {
+  background-color: var.$card-unfinished-bg;
+}
+.card {
+  color: #000;
+  border-radius: 0%;
+  box-shadow: 10px 5px 5px #49297e;
+}
+
+.card-header {
+  border-width: var.$border-bottom-width;
+  border-color: var.$border-botoom-color;
+  background-color: var.$card-header-color;
+}
+
+.card-text {
+  font-size: xx-large;
+}
+
+.inline-edit {
+  &.normal {
+    @include inline-input(var.$card-unfinished-bg);
+  }
+  &.card-header {
+    @include inline-input(var.$card-header-color);
+  }
+  &.done {
+    @include inline-input(var.$card-finished-bg);
+  }
+}

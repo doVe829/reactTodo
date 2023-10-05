@@ -1,5 +1,7 @@
 # Getting Started with Create React App
 
+This app has by no means optimal implementations and is used to test different react directives etc.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
