@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { TodoData } from "../mockData/mockTodos";
 import { Todo } from "../interfaces/Todo";
 import { TodoItem } from "./todoItem";
+import { useAppSelector } from "../store/hooks";
+import { selectTodos } from "../store/todoListSlice";
 
 export const TodoItemList = () => {
-  const [todoList, setTodoList] = useState<Todo[]>(TodoData);
+  const todoList = useAppSelector(selectTodos);
 
-  const items = todoList.map((item) => (
+  const items = todoList.map((item: Todo) => (
     <TodoItem key={item.id} todo={item}></TodoItem>
   ));
 

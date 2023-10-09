@@ -1,21 +1,30 @@
 import { useState, useRef } from "react";
 import { Todo } from "../interfaces/Todo";
 import { ButtonComponent } from "./button";
-import "./todoItem.scss";
+import "../style/todoItem.scss";
 import { ModalComponent } from "./modal";
+import { useDispatch } from "react-redux";
+import { removeTodo, updateTodo } from "../store/todoListSlice";
 
-type propStuff = {
+interface propStuff {
   todo: Todo;
-};
+}
+
 export const TodoItem = ({ todo }: propStuff) => {
-  const [todoName, setTodoName] = useState<string>(todo.name);
-  const [todoDescription, setTodoDescription] = useState<string>(
-    todo.description
-  );
+  const { name, description, done, id } = todo;
+
   const [editTitle, setEditTitle] = useState<boolean>(false);
   const [editDescription, setEditDescription] = useState<boolean>(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
+  const updateValue = (type: string, inputVal: string) => {
+    const update = {
+      ...todo,
+      [type]: inputVal,
+    };
+    dispatch(updateTodo(update));
+  };
 
   const makeEditiable = (type: string) => {
     if (type === "title") {
@@ -30,9 +39,7 @@ export const TodoItem = ({ todo }: propStuff) => {
 
   return (
     <div
-      className={`card mt-5 border-primary ${
-        todo.done ? "done" : "unfinished"
-      }`}
+      className={`card mt-5 border-primary ${done ? "done" : "unfinished"}`}
       style={{ width: "18em" }}
     >
       {!editTitle ? (
@@ -41,17 +48,17 @@ export const TodoItem = ({ todo }: propStuff) => {
           className="card-header mb-5 pointer"
           title="double click to edit"
         >
-          {todoName}
+          {name}
         </h3>
       ) : (
         <input
           ref={titleInputRef}
           type="text"
           name="bla"
-          value={todoName}
+          value={name}
           onBlur={() => setEditTitle(false)}
           className="inline-edit card-header"
-          onChange={(e) => setTodoName(e.target.value)}
+          onChange={(e) => updateValue("name", e.target.value)}
         />
       )}
 
@@ -63,22 +70,25 @@ export const TodoItem = ({ todo }: propStuff) => {
             title="double click to edit"
             onDoubleClick={() => makeEditiable("descr")}
           >
-            {todoDescription}
+            {description}
           </p>
         ) : (
           <input
             ref={descriptionInputRef}
             type="text"
             name="bla"
-            value={todoDescription}
+            value={description}
             onBlur={() => setEditDescription(false)}
             className="inline-edit card-header"
-            onChange={(e) => setTodoDescription(e.target.value)}
+            onChange={(e) => updateValue("description", e.target.value)}
           />
         )}
       </div>
       <div className="d-flex justify-content-end align-items-end">
-        <ButtonComponent btnIcon="bi bi-trash-fill"></ButtonComponent>
+        <ButtonComponent
+          clickHandler={() => dispatch(removeTodo(id))}
+          btnIcon="bi bi-trash-fill"
+        ></ButtonComponent>
         <ModalComponent modalTitle="Edit Todo" todo={todo}></ModalComponent>
       </div>
     </div>

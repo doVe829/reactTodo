@@ -1,9 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import "./modalComponent.scss";
+import "../style/modalComponent.scss";
 import { ButtonComponent } from "./button";
 import { Todo } from "../interfaces/Todo";
+import { updateTodo } from "../store/todoListSlice";
+import { useDispatch } from "react-redux";
 
 interface ModalProps {
   modalTitle: string;
@@ -18,7 +20,15 @@ export const ModalComponent = ({ modalTitle, todo }: ModalProps) => {
   const showModal = () => {
     handleShow();
   };
-  const [todoItem, setTodo] = useState<Todo>(todo);
+  const dispatch = useDispatch();
+
+  const updateValue = (type: string, inputVal: string) => {
+    const update = {
+      ...todo,
+      [type]: inputVal,
+    };
+    dispatch(updateTodo(update));
+  };
 
   return (
     <>
@@ -36,15 +46,15 @@ export const ModalComponent = ({ modalTitle, todo }: ModalProps) => {
           <input
             type="text"
             id="todoName"
-            value={todoItem.name}
-            onChange={(e) => setTodo({ ...todo, name: e.target.value })}
+            value={todo.name}
+            onChange={(e) => updateValue("name", e.target.value)}
           />
           <label htmlFor="todoDescription">Todo description:</label>
           <input
             type="text"
             id="todoDescription"
-            value={todoItem.description}
-            onChange={(e) => setTodo({ ...todo, description: e.target.value })}
+            value={todo.description}
+            onChange={(e) => updateValue("description", e.target.value)}
           />
         </Modal.Body>
         <Modal.Footer>
